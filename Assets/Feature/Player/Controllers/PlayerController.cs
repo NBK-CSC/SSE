@@ -1,0 +1,54 @@
+using SSE.Core.Abstractions.Controllers;
+using SSE.Core.Controllers;
+using UnityEngine;
+
+namespace SSE.Player.Controllers
+{
+    /// <summary>
+    /// Контроллер игрока
+    /// </summary>
+    [RequireComponent(typeof(MoveController), typeof(RotateController))]
+    public class PlayerController : MonoBehaviour
+    {
+        [SerializeField] private RotateController cameraRotateController;
+
+        private Transform _transform;
+        private IMoving _moveController;
+        private IRotating _playerRotateController;
+        private IRotating _cameraRotateController;
+        private Vector3 _direction;
+
+        private float _xRotation = 0;
+        private float _yRotation = 0;
+
+        private void Awake()
+        {
+            _moveController = GetComponent<IMoving>();
+            _playerRotateController = GetComponent<IRotating>();
+            _cameraRotateController = cameraRotateController;
+            
+            _direction = new Vector3();
+            _transform = transform;
+        }
+
+        private void Start()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        private void Update()
+        {
+            _xRotation -= Input.GetAxis("Mouse Y");
+            _yRotation += Input.GetAxis("Mouse X");
+            
+            _xRotation = Mathf.Clamp(_xRotation, -9f, 9f);
+            
+            _direction.x = Input.GetAxis("Horizontal");
+            _direction.z = Input.GetAxis("Vertical");
+            
+            _moveController.Interact(_transform.right * _direction.x + _transform.forward * _direction.z);
+            _playerRotateController.Interact(new Vector3(0f, _yRotation, 0f));
+            _cameraRotateController.Interact(new Vector3(_xRotation, 0f, 0f));
+        }
+    }
+}
