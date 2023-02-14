@@ -754,12 +754,12 @@ GameObject:
   - component: {fileID: 1261246513}
   - component: {fileID: 1261246512}
   - component: {fileID: 1261246511}
-  - component: {fileID: 1261246510}
   - component: {fileID: 1261246509}
   - component: {fileID: 1261246508}
   - component: {fileID: 1261246514}
   - component: {fileID: 1261246507}
   - component: {fileID: 1261246515}
+  - component: {fileID: 1261246516}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -798,7 +798,7 @@ MonoBehaviour:
   onEnded:
     m_PersistentCalls:
       m_Calls: []
-  speed: 20
+  speed: 10
 --- !u!143 &1261246509
 CharacterController:
   m_ObjectHideFlags: 0
@@ -822,29 +822,8 @@ CharacterController:
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &1261246510
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261246506}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1261246511
 MeshRenderer:
@@ -904,7 +883,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1261246506}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.1412563, y: 3.681, z: -2.2107775}
+  m_LocalPosition: {x: -2.1412563, y: 8.16941, z: -2.2107775}
   m_LocalScale: {x: 1, y: 2.4887, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -925,7 +904,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8b18a100fc04492a9fb185806c87ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 5
 --- !u!114 &1261246515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -944,8 +923,27 @@ MonoBehaviour:
   onEnded:
     m_PersistentCalls:
       m_Calls: []
-  startVelocity: -0.01
-  gravity: 1
+  startVelocity: -5
+  gravity: -10
+--- !u!114 &1261246516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261246506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14c8551971284a2dbaf93f4b0a7d58ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  onEnded:
+    m_PersistentCalls:
+      m_Calls: []
+  jumpHeight: 1
 --- !u!1 &1749460420
 GameObject:
   m_ObjectHideFlags: 0
@@ -975,8 +973,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1749460420}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.545, z: 0}
-  m_LocalScale: {x: 1, y: 0.0071549057, z: 1}
+  m_LocalPosition: {x: 0, y: -0.504, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.005, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1261246513}
