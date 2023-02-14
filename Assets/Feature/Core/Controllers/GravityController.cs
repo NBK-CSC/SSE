@@ -17,12 +17,16 @@ namespace SSE.Core.Controllers
         private IGroundDetecting _detector;
         private CharacterController _characterController;
         
-        private float _velocity;
         private int _countGroundChecker = 0;
+        private float _lastVelocity;
         
         public override event Action<bool> OnInteracted;
 
         public bool IsOnGround => _countGroundChecker >= 1;
+        
+        public float Gravity => gravity;
+        
+        public float Velocity { get; set; }
 
         private void Awake()
         {
@@ -30,19 +34,21 @@ namespace SSE.Core.Controllers
             _detector = GetComponentInChildren<IGroundDetecting>();
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             _detector.OnInteracted += SetGravity;
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             _detector.OnInteracted -= SetGravity;
         }
 
         private void Start()
         {
-            _velocity = startVelocity;
+            Velocity = startVelocity;
         }
 
         private void Update()
@@ -54,15 +60,15 @@ namespace SSE.Core.Controllers
         private void SetGravity(bool state)
         {
             _countGroundChecker += state ? 1 : -1;
-            if (state)
-                _velocity = startVelocity;
+            if (state && Velocity <= 0f)
+                Velocity = startVelocity;
             OnInteracted?.Invoke(!IsOnGround);
         }
 
         private void Fall()
         {
-            _velocity -= gravity * Time.deltaTime;
-            _characterController.Move(transform.up * _velocity);
+            Velocity += gravity * Time.deltaTime;
+            _characterController.Move(transform.up * (Velocity * Time.deltaTime));
         }
     }
 }
