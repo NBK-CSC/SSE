@@ -7,7 +7,7 @@ namespace SSE.Player.Controllers
     /// <summary>
     /// Контроллер игрока
     /// </summary>
-    [RequireComponent(typeof(MoveController), typeof(RotateController))]
+    [RequireComponent(typeof(MoveController), typeof(RotateController), typeof(JumpController))]
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private RotateController cameraRotateController;
