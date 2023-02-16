@@ -1,6 +1,7 @@
 using SSE.Core.Abstractions.Controllers;
 using SSE.Core.Controllers;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace SSE.Player.Controllers
 {
@@ -12,16 +13,16 @@ namespace SSE.Player.Controllers
     {
         [SerializeField] private RotateController cameraRotateController;
 
-        private Transform _transform;
         private IMoving _moveController;
         private IRotating _playerRotateController;
         private IRotating _cameraRotateController;
         private IJumping _jumpController;
         private IRunning _runController;
-        private Vector3 _direction;
-
-        private float _xRotation = 0;
-        private float _yRotation = 0;
+        
+        private Vector2 _moveDirection;
+        private Vector2 _lookDirection;
+        
+        private PlayerInputSystem _playerInput;
 
         private void Awake()
         {
@@ -30,9 +31,32 @@ namespace SSE.Player.Controllers
             _cameraRotateController = cameraRotateController;
             _jumpController = GetComponent<IJumping>();
             _runController = GetComponent<IRunning>();
+            _playerInput = new PlayerInputSystem();
             
-            _direction = new Vector3();
-            _transform = transform;
+            _moveDirection = new Vector2();
+            _lookDirection = new Vector2();
+        }
+
+        private void OnEnable()
+        {
+            _playerInput.Enable();
+            _playerInput.Player.Move.performed +=  Move;
+            _playerInput.Player.Move.canceled += Move;
+            _playerInput.Player.Look.performed += Look;
+            _playerInput.Player.Jump.performed += Jump;
+            _playerInput.Player.Run.started += StartRun;
+            _playerInput.Player.Run.canceled +=  StopRun;
+        }
+
+        private void OnDisable()
+        {
+            _playerInput.Disable();
+            _playerInput.Player.Move.performed -=  Move;
+            _playerInput.Player.Move.canceled -= Move;
+            _playerInput.Player.Look.performed -= Look;
+            _playerInput.Player.Jump.performed -= Jump;
+            _playerInput.Player.Run.started -= StartRun;
+            _playerInput.Player.Run.canceled -=  StopRun;
         }
 
         private void Start()
@@ -40,26 +64,32 @@ namespace SSE.Player.Controllers
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        private void Update()
+        private void Move(InputAction.CallbackContext ctx)
         {
-            if (Input.GetButtonDown("Jump"))
-                _jumpController.Jump();
-            else if (Input.GetKeyDown(KeyCode.LeftShift))
-                _runController.Run(_moveController);
-            else if (Input.GetKeyUp(KeyCode.LeftShift))
-                _runController.StopRun(_moveController);
-                
-            _xRotation -= Input.GetAxis("Mouse Y");
-            _yRotation += Input.GetAxis("Mouse X");
-            
-            _xRotation = Mathf.Clamp(_xRotation, -9f, 9f);
-            
-            _direction.x = Input.GetAxis("Horizontal");
-            _direction.z = Input.GetAxis("Vertical");
-            
-            _moveController.Interact(_transform.right * _direction.x + _transform.forward * _direction.z);
-            _playerRotateController.Interact(new Vector3(0f, _yRotation, 0f));
-            _cameraRotateController.Interact(new Vector3(_xRotation, 0f, 0f));
+            _moveDirection = _playerInput.Player.Move.ReadValue<Vector2>();
+            _moveController.Interact(_moveDirection);
+        }
+        
+        private void Look(InputAction.CallbackContext ctx)
+        {
+            _lookDirection = _playerInput.Player.Look.ReadValue<Vector2>();
+            _playerRotateController.Interact(new Vector3(0f, _lookDirection.x, 0f));
+            _cameraRotateController.Interact(new Vector3(-_lookDirection.y, 0f, 0f));
+        }
+
+        private void Jump(InputAction.CallbackContext ctx)
+        {
+            _jumpController.Jump();
+        }
+
+        private void StartRun(InputAction.CallbackContext ctx)
+        {
+            _runController.Run(_moveController);
+        }
+        
+        private void StopRun(InputAction.CallbackContext ctx)
+        {
+            _runController.StopRun(_moveController);
         }
     }
 }

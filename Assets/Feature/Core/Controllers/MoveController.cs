@@ -13,6 +13,7 @@ namespace SSE.Core.Controllers
         [SerializeField] private float speed;
         
         private CharacterController _characterController;
+        private Transform _transform;
         private Vector3 _direction;
         private float _currentSpeed;
         private float _boost = 1;
@@ -22,6 +23,7 @@ namespace SSE.Core.Controllers
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
+            _transform = transform;
         }
         
         private void Start()
@@ -33,8 +35,8 @@ namespace SSE.Core.Controllers
         {
             Move();
         }
-        
-        public void Interact(Vector3 direction)
+
+        public void Interact(Vector2 direction)
         {
             if (_direction.Equals(direction))
                 return;
@@ -47,7 +49,9 @@ namespace SSE.Core.Controllers
         
         private void Move()
         {
-            _characterController.Move(_direction * _boost * (_currentSpeed * Time.deltaTime));
+            _characterController.Move(
+                (_transform.right * _direction.x + _transform.forward * _direction.y) 
+                * (_currentSpeed * _boost * Time.deltaTime));
         }
         
         public void AddBoost(float boost)
