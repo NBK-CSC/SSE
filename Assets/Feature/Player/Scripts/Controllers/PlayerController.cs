@@ -17,6 +17,7 @@ namespace SSE.Player.Controllers
         private IRotating _playerRotateController;
         private IRotating _cameraRotateController;
         private IJumping _jumpController;
+        private IRunning _runController;
         private Vector3 _direction;
 
         private float _xRotation = 0;
@@ -28,6 +29,7 @@ namespace SSE.Player.Controllers
             _playerRotateController = GetComponent<IRotating>();
             _cameraRotateController = cameraRotateController;
             _jumpController = GetComponent<IJumping>();
+            _runController = GetComponent<IRunning>();
             
             _direction = new Vector3();
             _transform = transform;
@@ -42,6 +44,11 @@ namespace SSE.Player.Controllers
         {
             if (Input.GetButtonDown("Jump"))
                 _jumpController.Jump();
+            else if (Input.GetKeyDown(KeyCode.LeftShift))
+                _runController.Run(_moveController);
+            else if (Input.GetKeyUp(KeyCode.LeftShift))
+                _runController.StopRun(_moveController);
+                
             _xRotation -= Input.GetAxis("Mouse Y");
             _yRotation += Input.GetAxis("Mouse X");
             
