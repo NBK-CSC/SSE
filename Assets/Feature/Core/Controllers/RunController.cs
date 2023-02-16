@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace SSE.Core.Controllers
 {
+    /// <summary>
+    /// Контроллер бега
+    /// </summary>
     public class RunController : BaseInteractController, IRunning
     {
         [SerializeField] private float boostCoef;
