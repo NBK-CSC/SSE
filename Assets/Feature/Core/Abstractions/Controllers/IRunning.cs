@@ -11,6 +11,9 @@ namespace SSE.Core.Abstractions.Controllers
         /// Бег
         /// </summary>
         public void Run(IMoving moveController);
+        /// <summary>
+        /// Перейти на шаг
+        /// </summary>
         public void StopRun(IMoving moveController);
     }
 }
