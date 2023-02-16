@@ -15,6 +15,7 @@ namespace SSE.Core.Controllers
         private CharacterController _characterController;
         private Vector3 _direction;
         private float _currentSpeed;
+        private float _boost = 1;
         
         public override event Action<bool> OnInteracted;
         
@@ -46,17 +47,17 @@ namespace SSE.Core.Controllers
         
         private void Move()
         {
-            _characterController.Move(_direction * (_currentSpeed * Time.deltaTime));
+            _characterController.Move(_direction * _boost * (_currentSpeed * Time.deltaTime));
         }
         
         public void AddBoost(float boost)
         {
-            _currentSpeed -= boost;
+            _boost = boost;
         }
         
         public void RemoveBoost()
         {
-            _currentSpeed = speed;
+            _boost = 1;
         }
     }
 }
