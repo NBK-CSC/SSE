@@ -13,7 +13,6 @@ namespace SSE.Core.Controllers
         [SerializeField] private float speed;
         
         private CharacterController _characterController;
-        private IGroundLocating _gravitateController;
         private Vector3 _direction;
         private float _currentSpeed;
         
@@ -22,22 +21,21 @@ namespace SSE.Core.Controllers
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
-            _gravitateController = GetComponent<IGroundLocating>();
         }
-
+        
         private void Start()
         {
             _currentSpeed = speed;
         }
-
+        
         private void Update()
         {
             Move();
         }
-
+        
         public void Interact(Vector3 direction)
         {
-            if (!_gravitateController.IsOnGround || _direction.Equals(direction))
+            if (_direction.Equals(direction))
                 return;
             if(_direction.magnitude == 0)
                 OnInteracted?.Invoke(true);
@@ -50,12 +48,12 @@ namespace SSE.Core.Controllers
         {
             _characterController.Move(_direction * (_currentSpeed * Time.deltaTime));
         }
-
+        
         public void AddBoost(float boost)
         {
             _currentSpeed -= boost;
         }
-
+        
         public void RemoveBoost()
         {
             _currentSpeed = speed;
