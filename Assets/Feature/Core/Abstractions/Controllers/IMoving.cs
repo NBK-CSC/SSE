@@ -5,7 +5,7 @@ namespace SSE.Core.Abstractions.Controllers
     /// <summary>
     /// Интерфейс передвижения
     /// </summary>
-    public interface IMoving : IInteractable<Vector3>, IInteractObservable
+    public interface IMoving : IInteractable<Vector2>, IInteractObservable
     {
         /// <summary>
         /// Добавить буст к передвижению

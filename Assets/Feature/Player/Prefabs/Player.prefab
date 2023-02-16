@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 7856810071531448829}
   - component: {fileID: 7856810071531448826}
   - component: {fileID: 7856810071531448827}
+  - component: {fileID: 1259155613}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -148,7 +149,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8b18a100fc04492a9fb185806c87ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 0.5
+  minRotate: -180
+  maxRotate: 180
 --- !u!114 &7856810071531448829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,6 +204,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraRotateController: {fileID: 7856810073439591611}
+--- !u!114 &1259155613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7856810071531448804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b8b8f81c092c1d4daddcd863d5a9a1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  onEnded:
+    m_PersistentCalls:
+      m_Calls: []
+  boostCoef: 2
 --- !u!1 &7856810072083289098
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,4 +474,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8b18a100fc04492a9fb185806c87ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 0.5
+  minRotate: -90
+  maxRotate: 90
