@@ -9,6 +9,7 @@ namespace SSE.Player.Controllers
     /// Контроллер игрока
     /// </summary>
     [RequireComponent(typeof(MoveController), typeof(RotateController), typeof(JumpController))]
+    [RequireComponent(typeof(RunController), typeof(SquatController))]
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private RotateController cameraRotateController;
@@ -18,6 +19,7 @@ namespace SSE.Player.Controllers
         private IRotating _cameraRotateController;
         private IJumping _jumpController;
         private IRunning _runController;
+        private ISquatable _squatController;
         
         private Vector2 _moveDirection;
         private Vector2 _lookDirection;
@@ -31,6 +33,7 @@ namespace SSE.Player.Controllers
             _cameraRotateController = cameraRotateController;
             _jumpController = GetComponent<IJumping>();
             _runController = GetComponent<IRunning>();
+            _squatController = GetComponent<ISquatable>();
             _playerInput = new PlayerInputSystem();
             
             _moveDirection = new Vector2();
@@ -46,6 +49,8 @@ namespace SSE.Player.Controllers
             _playerInput.Player.Jump.performed += Jump;
             _playerInput.Player.Run.started += StartRun;
             _playerInput.Player.Run.canceled +=  StopRun;
+            _playerInput.Player.Squat.started += Squat;
+            _playerInput.Player.Squat.canceled += StandUp;
         }
 
         private void OnDisable()
@@ -57,6 +62,8 @@ namespace SSE.Player.Controllers
             _playerInput.Player.Jump.performed -= Jump;
             _playerInput.Player.Run.started -= StartRun;
             _playerInput.Player.Run.canceled -=  StopRun;
+            _playerInput.Player.Squat.started -= Squat;
+            _playerInput.Player.Squat.canceled -= StandUp;
         }
 
         private void Start()
@@ -90,6 +97,15 @@ namespace SSE.Player.Controllers
         private void StopRun(InputAction.CallbackContext ctx)
         {
             _runController.StopRun(_moveController);
+        }
+
+        private void Squat(InputAction.CallbackContext ctx)
+        {
+            _squatController.Squat(_moveController);
+        }
+        private void StandUp(InputAction.CallbackContext ctx)
+        {
+            _squatController.StandUp(_moveController);
         }
     }
 }

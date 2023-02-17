@@ -34,7 +34,6 @@ namespace SSE.Core.Controllers
         private void Rotate()
         {
             var newRotation = (_transform.localRotation * Quaternion.Euler(_rotation * speed)).eulerAngles;
-            Debug.LogError(newRotation);
             if (CheckSwivelRange(_startRotation.x, newRotation.x) 
                 && CheckSwivelRange(_startRotation.y, newRotation.y)
                 && CheckSwivelRange(_startRotation.z, newRotation.z))
