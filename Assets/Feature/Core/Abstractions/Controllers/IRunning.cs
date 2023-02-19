@@ -1,16 +1,15 @@
-﻿using UnityEngine;
-
-namespace SSE.Core.Abstractions.Controllers
+﻿namespace SSE.Core.Abstractions.Controllers
 {
     /// <summary>
     /// Интерфейс ускорения
     /// </summary>
-    interface IRunning: IInteractObservable
+    public interface IRunning : IInteractObservable
     {
         /// <summary>
         /// Бег
         /// </summary>
         public void Run(IMoving moveController);
+        
         /// <summary>
         /// Перейти на шаг
         /// </summary>

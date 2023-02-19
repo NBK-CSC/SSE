@@ -1,4 +1,6 @@
-﻿using SSE.Core.Abstractions.Controllers;
+﻿using SSE.Core.Abstractions.Behaviours;
+using SSE.Core.Abstractions.Controllers;
+using SSE.Core.Behaviours;
 using UnityEngine;
 
 namespace SSE.Core.Controllers
@@ -6,7 +8,7 @@ namespace SSE.Core.Controllers
     /// <summary>
     /// Контроллер поворота
     /// </summary>
-    public class RotateController : MonoBehaviour, IRotating
+    public class RotateController : MonoBehaviour, IRotating, ICanRestrict
     {
         [SerializeField] private float speed = 2f;
         [SerializeField] private float minRotate = -180;
@@ -17,15 +19,17 @@ namespace SSE.Core.Controllers
         private Vector3 _rotation;
         private bool _isStarted;
         
+        public IRestricted RestrictProperty { get; } = new RestrictionProperty();
+
         private void Awake()
         {
             _transform = transform;
             _startRotation = _transform.rotation.eulerAngles;
         }
         
-        public void Interact(Vector3 rotation)
+        public void Rotate(Vector3 rotation)
         {
-            if (_rotation.Equals(rotation))
+            if (_rotation.Equals(rotation) || RestrictProperty.IsRestrict)
                 return;
             _rotation = rotation;
             Rotate();
@@ -34,7 +38,6 @@ namespace SSE.Core.Controllers
         private void Rotate()
         {
             var newRotation = (_transform.localRotation * Quaternion.Euler(_rotation * speed)).eulerAngles;
-            Debug.LogError(newRotation);
             if (CheckSwivelRange(_startRotation.x, newRotation.x) 
                 && CheckSwivelRange(_startRotation.y, newRotation.y)
                 && CheckSwivelRange(_startRotation.z, newRotation.z))

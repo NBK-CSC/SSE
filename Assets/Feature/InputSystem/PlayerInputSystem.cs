@@ -62,6 +62,15 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Squat"",
+                    ""type"": ""Button"",
+                    ""id"": ""fdf4fef8-6004-4842-a7fd-ad7a3f2b73d9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -137,7 +146,7 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Mouse and Keyboard"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -148,8 +157,19 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Mouse and Keyboard"",
                     ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""de2ebec3-af19-45d8-a25d-83a4699f5b19"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Squat"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -170,6 +190,7 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
+        m_Player_Squat = m_Player.FindAction("Squat", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -233,6 +254,7 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Run;
+    private readonly InputAction m_Player_Squat;
     public struct PlayerActions
     {
         private @PlayerInputSystem m_Wrapper;
@@ -241,6 +263,7 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Run => m_Wrapper.m_Player_Run;
+        public InputAction @Squat => m_Wrapper.m_Player_Squat;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -262,6 +285,9 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
                 @Run.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
                 @Run.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
                 @Run.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
+                @Squat.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSquat;
+                @Squat.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSquat;
+                @Squat.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSquat;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -278,6 +304,9 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
                 @Run.started += instance.OnRun;
                 @Run.performed += instance.OnRun;
                 @Run.canceled += instance.OnRun;
+                @Squat.started += instance.OnSquat;
+                @Squat.performed += instance.OnSquat;
+                @Squat.canceled += instance.OnSquat;
             }
         }
     }
@@ -297,5 +326,6 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+        void OnSquat(InputAction.CallbackContext context);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using SSE.Core.Abstractions.Behaviours;
 using SSE.Core.Abstractions.Controllers;
+using SSE.Core.Behaviours;
 using UnityEngine;
 
 namespace SSE.Core.Controllers
@@ -7,8 +9,8 @@ namespace SSE.Core.Controllers
     /// <summary>
     /// Контроллер передвижения
     /// </summary>
-    [RequireComponent(typeof(CharacterController), typeof(GravityController))]
-    public class MoveController : BaseInteractController, IMoving
+    [RequireComponent(typeof(CharacterController))]
+    public class MoveController : BaseInteractController, IMoving, ICanRestrict
     {
         [SerializeField] private float speed;
         
@@ -17,7 +19,10 @@ namespace SSE.Core.Controllers
         private Vector3 _direction;
         private float _currentSpeed;
         private float _boost = 1;
-        
+        private bool _isInit;
+
+        public IRestricted RestrictProperty { get; } = new RestrictionProperty();
+
         public override event Action<bool> OnInteracted;
         
         private void Awake()
@@ -33,10 +38,16 @@ namespace SSE.Core.Controllers
         
         private void Update()
         {
-            Move();
+            if (!RestrictProperty.IsRestrict)
+                Move();
         }
 
-        public void Interact(Vector2 direction)
+        public void Init(CharacterController characterController)
+        {
+            _characterController = characterController;
+        }
+        
+        public void Move(Vector3 direction)
         {
             if (_direction.Equals(direction))
                 return;
