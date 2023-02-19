@@ -5,17 +5,17 @@ namespace SSE.Core.Abstractions.Controllers
     /// <summary>
     /// Интерфейс передвижения
     /// </summary>
-    public interface IMoving : IInteractable<Vector2>, IInteractObservable
+    public interface IMoving : IInteractObservable, IBoostChangeable
     {
         /// <summary>
-        /// Добавить буст к передвижению
+        /// Иницилизация
         /// </summary>
-        /// <param name="boost">Значение на сколько должна измениться скорость</param>
-        public void AddBoost(float boost);
+        /// <param name="characterController">Контроллер персонажа</param>
+        public void Init(CharacterController characterController);
 
         /// <summary>
-        /// Убрать буст
+        /// Передвинуться
         /// </summary>
-        public void RemoveBoost();
+        public void Move(Vector3 direction);
     }
 }

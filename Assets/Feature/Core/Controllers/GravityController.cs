@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using SSE.Core.Abstractions.Behaviours;
 using SSE.Core.Abstractions.Controllers;
 using UnityEngine;
@@ -14,35 +15,38 @@ namespace SSE.Core.Controllers
         [SerializeField] private float startVelocity = -2f;
         [SerializeField] private float gravity = 10f;
         
-        private IGroundDetecting _detector;
+        private ISurfaceDetecting _detector;
         private CharacterController _characterController;
         
-        private int _countGroundChecker = 0;
         private float _lastVelocity;
+        private bool _isInit;
         
         public override event Action<bool> OnInteracted;
-
-        public bool IsOnGround => _countGroundChecker >= 1;
         
         public float Gravity => gravity;
         
         public float Velocity { get; set; }
-
-        private void Awake()
+        
+        public void Init(CharacterController characterController, ISurfaceDetecting surfaceDownDetector)
         {
-            _characterController = GetComponent<CharacterController>();
-            _detector = GetComponentInChildren<IGroundDetecting>();
+            _characterController = characterController;
+            _detector = surfaceDownDetector;
+            _isInit = true;
         }
 
-        protected override void OnEnable()
+        protected override async void OnEnable()
         {
             base.OnEnable();
+            while (!_isInit)
+                await Task.Yield();
             _detector.OnInteracted += SetGravity;
         }
 
-        protected override void OnDisable()
+        protected override async void OnDisable()
         {
             base.OnDisable();
+            while (!_isInit)
+                await Task.Yield();
             _detector.OnInteracted -= SetGravity;
         }
 
@@ -53,16 +57,15 @@ namespace SSE.Core.Controllers
 
         private void Update()
         {
-            if (!IsOnGround)
+            if (!_detector.IsOnSurface)
                 Fall();
         }
         
         private void SetGravity(bool state)
         {
-            _countGroundChecker += state ? 1 : -1;
             if (state && Velocity <= 0f)
                 Velocity = startVelocity;
-            OnInteracted?.Invoke(!IsOnGround);
+            OnInteracted?.Invoke(!_detector.IsOnSurface);
         }
 
         private void Fall()

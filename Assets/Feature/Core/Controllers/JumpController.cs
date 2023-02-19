@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using SSE.Core.Abstractions.Behaviours;
 using SSE.Core.Abstractions.Controllers;
+using SSE.Core.Behaviours;
 using UnityEngine;
 
 namespace SSE.Core.Controllers
@@ -8,34 +10,41 @@ namespace SSE.Core.Controllers
     /// <summary>
     /// Контроллер прыжка
     /// </summary>
-    [RequireComponent(typeof(GravityController), typeof(CharacterController))]
-    public class JumpController : BaseInteractController, IJumping
+    public class JumpController : BaseInteractController, IJumping, ICanRestrict
     {
         [SerializeField] [Min(0)] private float jumpHeight = 1f;
         
         private CharacterController _characterController;
+        private ISurfaceDetecting _detector;
         private IGravitational _gravityController;
-        private bool _isStarted = false;
         private Transform _transform;
-        
+        private bool _isStarted = false;
+
+        public IRestricted RestrictProperty { get; } = new RestrictionProperty();
+
         public override event Action<bool> OnInteracted;
         
         private void Awake()
         {
-            _characterController = GetComponent<CharacterController>();
-            _gravityController = GetComponent<IGravitational>();
             _transform = transform;
         }
-        
+
+        public void Init(CharacterController characterController, IGravitational gravitateController, ISurfaceDetecting surfaceDownDetector)
+        {
+            _characterController = characterController;
+            _gravityController = gravitateController;
+            _detector = surfaceDownDetector;
+        }
+
         public void Jump()
         {
-            if (!_gravityController.IsOnGround || _isStarted)
+            if (!_detector.IsOnSurface || RestrictProperty.IsRestrict || _isStarted)
                 return;
             _isStarted = true;
-            StartCoroutine(ToStart());
+            StartCoroutine(DelayStart());
         }
         
-        private IEnumerator ToStart()
+        private IEnumerator DelayStart()
         {
             OnInteracted?.Invoke(true);
             _gravityController.Velocity = Mathf.Sqrt(jumpHeight * -2f * _gravityController.Gravity);

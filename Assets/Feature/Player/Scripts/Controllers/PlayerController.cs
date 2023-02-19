@@ -1,4 +1,6 @@
+using SSE.Core.Abstractions.Behaviours;
 using SSE.Core.Abstractions.Controllers;
+using SSE.Core.Behaviours;
 using SSE.Core.Controllers;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,18 +10,22 @@ namespace SSE.Player.Controllers
     /// <summary>
     /// Контроллер игрока
     /// </summary>
-    [RequireComponent(typeof(MoveController), typeof(RotateController), typeof(JumpController))]
-    [RequireComponent(typeof(RunController), typeof(SquatController))]
+    [RequireComponent(typeof(CharacterController),typeof(MoveController), typeof(RotateController))]
+    [RequireComponent(typeof(RunController), typeof(JumpController), typeof(SquatController))]
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private RotateController cameraRotateController;
+        [SerializeField] private SurfaceDetector surfaceDownDetector;
+        [SerializeField] private SurfaceDetector surfaceUpDetector;
 
+        private CharacterController _characterController;
         private IMoving _moveController;
+        private IGravitational _gravitateController;
         private IRotating _playerRotateController;
         private IRotating _cameraRotateController;
         private IJumping _jumpController;
         private IRunning _runController;
-        private ISquatable _squatController;
+        private ISquat _squatController;
         
         private Vector2 _moveDirection;
         private Vector2 _lookDirection;
@@ -28,29 +34,45 @@ namespace SSE.Player.Controllers
 
         private void Awake()
         {
+            _playerInput = new PlayerInputSystem();
+            _characterController = GetComponent<CharacterController>();
             _moveController = GetComponent<IMoving>();
             _playerRotateController = GetComponent<IRotating>();
             _cameraRotateController = cameraRotateController;
             _jumpController = GetComponent<IJumping>();
             _runController = GetComponent<IRunning>();
-            _squatController = GetComponent<ISquatable>();
-            _playerInput = new PlayerInputSystem();
+            _squatController = GetComponent<ISquat>();
+            _gravitateController = GetComponent<IGravitational>();
+            
+            Init();
             
             _moveDirection = new Vector2();
             _lookDirection = new Vector2();
         }
 
+        private void Init()
+        {
+            _moveController.Init(_characterController);
+            _jumpController.Init(_characterController, _gravitateController, surfaceDownDetector);
+            _squatController.Init(_characterController, surfaceUpDetector, surfaceDownDetector);
+            _gravitateController.Init(_characterController, surfaceDownDetector);
+        }
+
         private void OnEnable()
         {
             _playerInput.Enable();
-            _playerInput.Player.Move.performed +=  Move;
+            _playerInput.Player.Move.performed += Move;
             _playerInput.Player.Move.canceled += Move;
             _playerInput.Player.Look.performed += Look;
             _playerInput.Player.Jump.performed += Jump;
             _playerInput.Player.Run.started += StartRun;
             _playerInput.Player.Run.canceled +=  StopRun;
-            _playerInput.Player.Squat.started += Squat;
+            _playerInput.Player.Squat.started += SitDown;
             _playerInput.Player.Squat.canceled += StandUp;
+            
+            ((IRestricting)_squatController).AddRestricts(
+                ((ICanRestrict)_jumpController).RestrictProperty, 
+                ((ICanRestrict)_runController).RestrictProperty);
         }
 
         private void OnDisable()
@@ -62,8 +84,12 @@ namespace SSE.Player.Controllers
             _playerInput.Player.Jump.performed -= Jump;
             _playerInput.Player.Run.started -= StartRun;
             _playerInput.Player.Run.canceled -=  StopRun;
-            _playerInput.Player.Squat.started -= Squat;
+            _playerInput.Player.Squat.started -= SitDown;
             _playerInput.Player.Squat.canceled -= StandUp;
+            
+            ((IRestricting)_squatController).RemoveRestricts(
+                ((ICanRestrict)_jumpController).RestrictProperty, 
+                ((ICanRestrict)_runController).RestrictProperty);
         }
 
         private void Start()
@@ -74,14 +100,14 @@ namespace SSE.Player.Controllers
         private void Move(InputAction.CallbackContext ctx)
         {
             _moveDirection = _playerInput.Player.Move.ReadValue<Vector2>();
-            _moveController.Interact(_moveDirection);
+            _moveController.Move(_moveDirection);
         }
         
         private void Look(InputAction.CallbackContext ctx)
         {
             _lookDirection = _playerInput.Player.Look.ReadValue<Vector2>();
-            _playerRotateController.Interact(new Vector3(0f, _lookDirection.x, 0f));
-            _cameraRotateController.Interact(new Vector3(-_lookDirection.y, 0f, 0f));
+            _playerRotateController.Rotate(new Vector3(0f, _lookDirection.x, 0f));
+            _cameraRotateController.Rotate(new Vector3(-_lookDirection.y, 0f, 0f));
         }
 
         private void Jump(InputAction.CallbackContext ctx)
@@ -99,10 +125,11 @@ namespace SSE.Player.Controllers
             _runController.StopRun(_moveController);
         }
 
-        private void Squat(InputAction.CallbackContext ctx)
+        private void SitDown(InputAction.CallbackContext ctx)
         {
-            _squatController.Squat(_moveController);
+            _squatController.SitDown(_moveController);
         }
+        
         private void StandUp(InputAction.CallbackContext ctx)
         {
             _squatController.StandUp(_moveController);

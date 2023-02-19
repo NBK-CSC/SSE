@@ -1,18 +1,18 @@
-﻿namespace SSE.Core.Abstractions.Controllers
+﻿using SSE.Core.Abstractions.Behaviours;
+using UnityEngine;
+
+namespace SSE.Core.Abstractions.Controllers
 {
     /// <summary>
     /// Интерфейс гравитации
     /// </summary>
-    public interface IGravitational : IGroundLocating, IInteractObservable
+    public interface IGravitational : IVelocityChangeable, IInteractObservable
     {
         /// <summary>
-        /// Гравитационная постоянная
+        /// Иницилизация
         /// </summary>
-        public float Gravity { get; }
-        
-        /// <summary>
-        /// Скорость падения
-        /// </summary>
-        public float Velocity { get; set; }
+        /// <param name="characterController">Контроллер персонажа</param>
+        /// <param name="surfaceDownDetector">Детектор нижней поверхности</param>
+        public void Init(CharacterController characterController, ISurfaceDetecting surfaceDownDetector);
     }
 }
