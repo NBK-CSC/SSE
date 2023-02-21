@@ -2,6 +2,8 @@ using SSE.Core.Abstractions.Behaviours;
 using SSE.Core.Abstractions.Controllers;
 using SSE.Core.Behaviours;
 using SSE.Core.Controllers;
+using SSE.Inventory.Abstractions.Controllers;
+using SSE.Inventory.Controllers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +19,7 @@ namespace SSE.Player.Controllers
         [SerializeField] private RotateController cameraRotateController;
         [SerializeField] private SurfaceDetector surfaceDownDetector;
         [SerializeField] private SurfaceDetector surfaceUpDetector;
+        [SerializeField] private AccessBarController accessBarController;
 
         private CharacterController _characterController;
         private IMoving _moveController;
@@ -26,6 +29,8 @@ namespace SSE.Player.Controllers
         private IJumping _jumpController;
         private IRunning _runController;
         private ISquat _squatController;
+
+        private IAccessBar _accessBar;
         
         private Vector2 _moveDirection;
         private Vector2 _lookDirection;
@@ -45,6 +50,8 @@ namespace SSE.Player.Controllers
             _gravitateController = GetComponent<IGravitational>();
             
             Init();
+
+            _accessBar = accessBarController;
             
             _moveDirection = new Vector2();
             _lookDirection = new Vector2();
@@ -69,6 +76,7 @@ namespace SSE.Player.Controllers
             _playerInput.Player.Run.canceled +=  StopRun;
             _playerInput.Player.Squat.started += SitDown;
             _playerInput.Player.Squat.canceled += StandUp;
+            _playerInput.AccessBar.KeyBoard.performed += ChooseObjectOnAccessBar;
             
             ((IRestricting)_squatController).AddRestricts(
                 ((ICanRestrict)_jumpController).RestrictProperty, 
@@ -86,6 +94,7 @@ namespace SSE.Player.Controllers
             _playerInput.Player.Run.canceled -=  StopRun;
             _playerInput.Player.Squat.started -= SitDown;
             _playerInput.Player.Squat.canceled -= StandUp;
+            _playerInput.AccessBar.KeyBoard.performed -= ChooseObjectOnAccessBar;
             
             ((IRestricting)_squatController).RemoveRestricts(
                 ((ICanRestrict)_jumpController).RestrictProperty, 
@@ -133,6 +142,14 @@ namespace SSE.Player.Controllers
         private void StandUp(InputAction.CallbackContext ctx)
         {
             _squatController.StandUp(_moveController);
+        }
+        
+        private void ChooseObjectOnAccessBar(InputAction.CallbackContext ctx)
+        {
+            var number = _playerInput.AccessBar.KeyBoard.ReadValue<float>();
+            if (number == 0)
+                return;
+            _accessBar.Choose((int)number);
         }
     }
 }
