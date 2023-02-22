@@ -1,22 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-namespace SSE
+namespace SSE.Player.Controllers
 {
+    /// <summary>
+    /// Контроллер главного меню
+    /// </summary>
     public class MainMenuController : MonoBehaviour
     {
-        // Запуск игры
-        public void Play()
+        [SerializeField] private Button playButton;
+        [SerializeField] private Button quitButton;
+
+        private void OnEnable()
+        {
+            playButton.onClick.AddListener(Play);
+            quitButton.onClick.AddListener(Quit);
+        }
+        private void Play()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
-        // Выход из игры
-        public void Quit()
+        private void Quit()
         {
             Application.Quit();
-            Debug.Log("Player has quit !");
         }
     }
 }
