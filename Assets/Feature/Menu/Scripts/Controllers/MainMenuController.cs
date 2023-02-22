@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace SSE.Player.Controllers
+namespace SSE.Menu.Scripts.Controllers
 {
     /// <summary>
     /// Контроллер главного меню
@@ -20,10 +20,18 @@ namespace SSE.Player.Controllers
             playButton.onClick.AddListener(Play);
             quitButton.onClick.AddListener(Quit);
         }
+        
+        private void OnDisable()
+        {
+            playButton.onClick.RemoveListener(Play);
+            quitButton.onClick.RemoveListener(Quit);
+        }
+
         private void Play()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
+        
         private void Quit()
         {
             Application.Quit();
