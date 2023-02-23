@@ -1210,7 +1210,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!1001 &7856810072758481358
+--- !u!1001 &4677742008529267196
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1218,57 +1218,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7856810071531448804, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7856810071531448827, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
+    - target: {fileID: 4677742009755251145, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
       propertyPath: accessBarController
       value: 
       objectReference: {fileID: 1471386541}
-    - target: {fileID: 7856810071531448831, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
+    - target: {fileID: 4677742009755251149, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7856810071531448831, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
+    - target: {fileID: 4677742009755251149, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.1412563
       objectReference: {fileID: 0}
-    - target: {fileID: 7856810071531448831, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
+    - target: {fileID: 4677742009755251149, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
       propertyPath: m_LocalPosition.y
       value: 8.16941
       objectReference: {fileID: 0}
-    - target: {fileID: 7856810071531448831, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
+    - target: {fileID: 4677742009755251149, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
       propertyPath: m_LocalPosition.z
       value: -2.2107775
       objectReference: {fileID: 0}
-    - target: {fileID: 7856810071531448831, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
+    - target: {fileID: 4677742009755251149, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7856810071531448831, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
+    - target: {fileID: 4677742009755251149, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7856810071531448831, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
+    - target: {fileID: 4677742009755251149, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7856810071531448831, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
+    - target: {fileID: 4677742009755251149, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7856810071531448831, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
+    - target: {fileID: 4677742009755251149, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7856810071531448831, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
+    - target: {fileID: 4677742009755251149, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7856810071531448831, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
+    - target: {fileID: 4677742009755251149, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4677742009755251158, guid: ac926d40014d6504d963289e9c8537d6, type: 3}
+      propertyPath: m_Name
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

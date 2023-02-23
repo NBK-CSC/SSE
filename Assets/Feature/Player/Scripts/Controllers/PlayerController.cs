@@ -1,9 +1,18 @@
-using SSE.Core.Abstractions.Behaviours;
 using SSE.Core.Abstractions.Controllers;
 using SSE.Core.Behaviours;
-using SSE.Core.Controllers;
 using SSE.Inventory.Abstractions.Controllers;
 using SSE.Inventory.Controllers;
+using SSE.Movement.Gravity.Abstractions.Controllers;
+using SSE.Movement.Jump.Abstractions.Controller;
+using SSE.Movement.Jump.Controller;
+using SSE.Movement.Move.Abstractions.Controller;
+using SSE.Movement.Move.Controller;
+using SSE.Movement.Rotate.Abstractions.Controller;
+using SSE.Movement.Rotate.Controller;
+using SSE.Movement.Run.Abstractions.Controllers;
+using SSE.Movement.Run.Controllers;
+using SSE.Movement.Squat.Abstractions.Controller;
+using SSE.Movement.Squat.Controller;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
