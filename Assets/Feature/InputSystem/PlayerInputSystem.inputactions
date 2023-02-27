@@ -154,7 +154,7 @@
             ]
         },
         {
-            "name": "AccessBar",
+            "name": "Interaction",
             "id": "c2570c07-be9b-4309-aae4-871c439c2e24",
             "actions": [
                 {
@@ -165,6 +165,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Take",
+                    "type": "Button",
+                    "id": "d6e7bf2e-65ea-4e7b-a11c-33dbefe9e107",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -264,6 +273,17 @@
                     "processors": "Scale(factor=9)",
                     "groups": "Mouse and Keyboard",
                     "action": "KeyBoard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2f92f18e-9b9a-407d-970c-1d9ef643da26",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Take",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

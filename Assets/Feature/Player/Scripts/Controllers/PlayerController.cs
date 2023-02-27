@@ -1,7 +1,9 @@
 using SSE.Core.Abstractions.Controllers;
 using SSE.Core.Behaviours;
-using SSE.Inventory.Abstractions.Controllers;
-using SSE.Inventory.Controllers;
+using SSE.AccessBar.Abstractions.Controllers;
+using SSE.AccessBar.Behaviours;
+using SSE.AccessBar.Controllers;
+using SSE.AccessBar.Views;
 using SSE.Movement.Gravity.Abstractions.Controllers;
 using SSE.Movement.Jump.Abstractions.Controller;
 using SSE.Movement.Jump.Controller;
@@ -13,6 +15,7 @@ using SSE.Movement.Run.Abstractions.Controllers;
 using SSE.Movement.Run.Controllers;
 using SSE.Movement.Squat.Abstractions.Controller;
 using SSE.Movement.Squat.Controller;
+using SSE.Take.Abstractions.Controllers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -29,6 +32,9 @@ namespace SSE.Player.Controllers
         [SerializeField] private SurfaceDetector surfaceDownDetector;
         [SerializeField] private SurfaceDetector surfaceUpDetector;
         [SerializeField] private AccessBarController accessBarController;
+        [SerializeField] private ItemFactory itemFactory;
+        [SerializeField] private SlotFactory slotFactory;
+        [SerializeField] private ItemInHandController itemInHandController;
 
         private CharacterController _characterController;
         private IMoving _moveController;
@@ -39,6 +45,7 @@ namespace SSE.Player.Controllers
         private IRunning _runController;
         private ISquat _squatController;
 
+        private ITakeController _takeController;
         private IAccessBar _accessBar;
         
         private Vector2 _moveDirection;
@@ -57,11 +64,11 @@ namespace SSE.Player.Controllers
             _runController = GetComponent<IRunning>();
             _squatController = GetComponent<ISquat>();
             _gravitateController = GetComponent<IGravitational>();
-            
-            Init();
 
+            _takeController = GetComponentInChildren<ITakeController>();
             _accessBar = accessBarController;
-            
+
+            Init();
             _moveDirection = new Vector2();
             _lookDirection = new Vector2();
         }
@@ -72,6 +79,10 @@ namespace SSE.Player.Controllers
             _jumpController.Init(_characterController, _gravitateController, surfaceDownDetector);
             _squatController.Init(_characterController, surfaceUpDetector, surfaceDownDetector);
             _gravitateController.Init(_characterController, surfaceDownDetector);
+
+            itemInHandController.Init(_takeController.Container);
+            _accessBar.Init(itemInHandController, slotFactory, itemFactory);
+            _takeController.Init(_accessBar);
         }
 
         private void OnEnable()
@@ -85,7 +96,8 @@ namespace SSE.Player.Controllers
             _playerInput.Player.Run.canceled +=  StopRun;
             _playerInput.Player.Squat.started += SitDown;
             _playerInput.Player.Squat.canceled += StandUp;
-            _playerInput.AccessBar.KeyBoard.performed += ChooseObjectOnAccessBar;
+            _playerInput.Interaction.KeyBoard.performed += ChooseObjectOnAccessBar;
+            _playerInput.Interaction.Take.started += Take;
             
             ((IRestricting)_squatController).AddRestricts(
                 ((ICanRestrict)_jumpController).RestrictProperty, 
@@ -103,7 +115,8 @@ namespace SSE.Player.Controllers
             _playerInput.Player.Run.canceled -=  StopRun;
             _playerInput.Player.Squat.started -= SitDown;
             _playerInput.Player.Squat.canceled -= StandUp;
-            _playerInput.AccessBar.KeyBoard.performed -= ChooseObjectOnAccessBar;
+            _playerInput.Interaction.KeyBoard.performed -= ChooseObjectOnAccessBar;
+            _playerInput.Interaction.Take.started -= Take;
             
             ((IRestricting)_squatController).RemoveRestricts(
                 ((ICanRestrict)_jumpController).RestrictProperty, 
@@ -155,10 +168,15 @@ namespace SSE.Player.Controllers
         
         private void ChooseObjectOnAccessBar(InputAction.CallbackContext ctx)
         {
-            var number = _playerInput.AccessBar.KeyBoard.ReadValue<float>();
+            var number = _playerInput.Interaction.KeyBoard.ReadValue<float>();
             if (number == 0)
                 return;
             _accessBar.Choose((int)number);
+        }
+
+        private void Take(InputAction.CallbackContext ctx)
+        {
+            _takeController.Take();
         }
     }
 }
