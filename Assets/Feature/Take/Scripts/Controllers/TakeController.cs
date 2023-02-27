@@ -13,22 +13,21 @@ namespace SSE.Take.Controllers
         [SerializeField] private LayerMask ignoreLayer;
         [SerializeField] private float takeDistance = 10f;
         [SerializeField] private Container container;
+        [SerializeField] private Transform direction;
         
         private IAddingItem _addController;
-        private Transform _transform;
 
         public Container Container => container;
 
         public void Init(IAddingItem addController)
         {
             _addController = addController;
-            _transform = transform;
         }
         
         public void Take()
         {
             if (_addController.IsFull || 
-                !Physics.Raycast(_transform.position, _transform.TransformDirection(Vector3.forward), out var hit, takeDistance, ~ignoreLayer) || 
+                !Physics.Raycast(direction.position, direction.TransformDirection(Vector3.forward), out var hit, takeDistance, ~ignoreLayer) || 
                 !hit.transform.TryGetComponent<ITaking>(out var takeObj)) 
                 return;
             container.Add(takeObj.Name, hit.transform.gameObject);
