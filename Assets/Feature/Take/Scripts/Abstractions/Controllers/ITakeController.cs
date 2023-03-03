@@ -1,5 +1,5 @@
-﻿using SSE.AccessBar.Abstractions.Controllers;
-using SSE.Core.Behaviours;
+﻿using SSE.Core.Behaviours;
+using SSE.Inventory.Abstractions.Controllers;
 
 namespace SSE.Take.Abstractions.Controllers
 {
@@ -9,15 +9,10 @@ namespace SSE.Take.Abstractions.Controllers
     public interface ITakeController
     {
         /// <summary>
-        /// Контейнер со поднятыми объектами
-        /// </summary>
-        public Container Container { get; }
-
-        /// <summary>
         /// Иницилизация
         /// </summary>
         /// <param name="addController">Контроллер которому можно добавить элемент</param>
-        public void Init(IAddingItem addController);
+        public void Init(IAdding addController);
         
         /// <summary>
         /// Поднять

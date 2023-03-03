@@ -1,5 +1,4 @@
-﻿using SSE.AccessBar.Abstractions.Controllers;
-using SSE.Core.Behaviours;
+﻿using SSE.Inventory.Abstractions.Controllers;
 using SSE.Take.Abstractions.Controllers;
 using UnityEngine;
 
@@ -12,14 +11,11 @@ namespace SSE.Take.Controllers
     {
         [SerializeField] private LayerMask ignoreLayer;
         [SerializeField] private float takeDistance = 10f;
-        [SerializeField] private Container container;
         [SerializeField] private Transform direction;
         
-        private IAddingItem _addController;
+        private IAdding _addController;
 
-        public Container Container => container;
-
-        public void Init(IAddingItem addController)
+        public void Init(IAdding addController)
         {
             _addController = addController;
         }
@@ -30,8 +26,7 @@ namespace SSE.Take.Controllers
                 !Physics.Raycast(direction.position, direction.TransformDirection(Vector3.forward), out var hit, takeDistance, ~ignoreLayer) || 
                 !hit.transform.TryGetComponent<ITaking>(out var takeObj)) 
                 return;
-            container.Add(takeObj.Name, hit.transform.gameObject);
-            _addController.TryAdd(takeObj.Name);
+            _addController.TryAdd(takeObj.Name, hit.transform.gameObject);
         }
     }
 }
