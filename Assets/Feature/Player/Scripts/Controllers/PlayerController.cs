@@ -5,6 +5,7 @@ using SSE.Inventory.Views;
 using SSE.Inventory.Abstractions.Controllers;
 using SSE.Inventory.Controllers;
 using SSE.Movement.Gravity.Abstractions.Controllers;
+using SSE.Movement.Gravity.Controllers;
 using SSE.Movement.Jump.Abstractions.Controller;
 using SSE.Movement.Jump.Controller;
 using SSE.Movement.Move.Abstractions.Controller;
@@ -16,6 +17,8 @@ using SSE.Movement.Run.Controllers;
 using SSE.Movement.Squat.Abstractions.Controller;
 using SSE.Movement.Squat.Controller;
 using SSE.Take.Abstractions.Controllers;
+using SSE.Take.Controllers;
+using SSE.Throw.Abstractions.Controllers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,6 +29,7 @@ namespace SSE.Player.Controllers
     /// </summary>
     [RequireComponent(typeof(CharacterController),typeof(MoveController), typeof(RotateController))]
     [RequireComponent(typeof(RunController), typeof(JumpController), typeof(SquatController))]
+    [RequireComponent(typeof(GravityController))]
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private RotateController cameraRotateController;
@@ -43,6 +47,7 @@ namespace SSE.Player.Controllers
         private ISquat _squatController;
 
         private ITakeController _takeController;
+        private IThrowController _throwController;
         private IInventory _inventory;
         
         private Vector2 _moveDirection;
@@ -63,6 +68,7 @@ namespace SSE.Player.Controllers
             _gravitateController = GetComponent<IGravitational>();
 
             _takeController = GetComponentInChildren<ITakeController>();
+            _throwController = GetComponentInChildren<IThrowController>();
             _inventory = inventoryController;
 
             Init();
@@ -79,6 +85,7 @@ namespace SSE.Player.Controllers
             
             _inventory.Init();
             _takeController.Init(_inventory);
+            _throwController.Init(_inventory, _moveController);
         }
 
         private void OnEnable()
@@ -94,6 +101,7 @@ namespace SSE.Player.Controllers
             _playerInput.Player.Squat.canceled += StandUp;
             _playerInput.Interaction.KeyBoard.performed += ChooseObjectOnAccessBar;
             _playerInput.Interaction.Take.started += Take;
+            _playerInput.Interaction.Throw.started += Throw;
             
             ((IRestricting)_squatController).AddRestricts(
                 ((ICanRestrict)_jumpController).RestrictProperty, 
@@ -113,6 +121,7 @@ namespace SSE.Player.Controllers
             _playerInput.Player.Squat.canceled -= StandUp;
             _playerInput.Interaction.KeyBoard.performed -= ChooseObjectOnAccessBar;
             _playerInput.Interaction.Take.started -= Take;
+            _playerInput.Interaction.Throw.started -= Throw;
             
             ((IRestricting)_squatController).RemoveRestricts(
                 ((ICanRestrict)_jumpController).RestrictProperty, 
@@ -173,6 +182,11 @@ namespace SSE.Player.Controllers
         private void Take(InputAction.CallbackContext ctx)
         {
             _takeController.Take();
+        }
+        
+        private void Throw(InputAction.CallbackContext ctx)
+        {
+            _throwController.Throw();
         }
     }
 }
