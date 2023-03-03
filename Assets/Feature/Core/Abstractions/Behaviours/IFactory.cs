@@ -11,7 +11,7 @@ namespace SSE.Core.Abstractions.Behaviours
         /// <summary>
         /// Иницилизация фабрики
         /// </summary>
-        public void Init();
+        public void Init(int amount);
         
         /// <summary>
         /// Создать элемент

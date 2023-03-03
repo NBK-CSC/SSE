@@ -1,9 +1,9 @@
 using SSE.Core.Abstractions.Controllers;
 using SSE.Core.Behaviours;
-using SSE.AccessBar.Abstractions.Controllers;
-using SSE.AccessBar.Behaviours;
-using SSE.AccessBar.Controllers;
-using SSE.AccessBar.Views;
+using SSE.Inventory.Behaviours;
+using SSE.Inventory.Views;
+using SSE.Inventory.Abstractions.Controllers;
+using SSE.Inventory.Controllers;
 using SSE.Movement.Gravity.Abstractions.Controllers;
 using SSE.Movement.Jump.Abstractions.Controller;
 using SSE.Movement.Jump.Controller;
@@ -31,10 +31,7 @@ namespace SSE.Player.Controllers
         [SerializeField] private RotateController cameraRotateController;
         [SerializeField] private SurfaceDetector surfaceDownDetector;
         [SerializeField] private SurfaceDetector surfaceUpDetector;
-        [SerializeField] private AccessBarController accessBarController;
-        [SerializeField] private ItemFactory itemFactory;
-        [SerializeField] private SlotFactory slotFactory;
-        [SerializeField] private ItemInHandController itemInHandController;
+        [SerializeField] private InventoryController inventoryController;
 
         private CharacterController _characterController;
         private IMoving _moveController;
@@ -46,7 +43,7 @@ namespace SSE.Player.Controllers
         private ISquat _squatController;
 
         private ITakeController _takeController;
-        private IAccessBar _accessBar;
+        private IInventory _inventory;
         
         private Vector2 _moveDirection;
         private Vector2 _lookDirection;
@@ -66,7 +63,7 @@ namespace SSE.Player.Controllers
             _gravitateController = GetComponent<IGravitational>();
 
             _takeController = GetComponentInChildren<ITakeController>();
-            _accessBar = accessBarController;
+            _inventory = inventoryController;
 
             Init();
             _moveDirection = new Vector2();
@@ -79,10 +76,9 @@ namespace SSE.Player.Controllers
             _jumpController.Init(_characterController, _gravitateController, surfaceDownDetector);
             _squatController.Init(_characterController, surfaceUpDetector, surfaceDownDetector);
             _gravitateController.Init(_characterController, surfaceDownDetector);
-
-            itemInHandController.Init(_takeController.Container);
-            _accessBar.Init(itemInHandController, slotFactory, itemFactory);
-            _takeController.Init(_accessBar);
+            
+            _inventory.Init();
+            _takeController.Init(_inventory);
         }
 
         private void OnEnable()
@@ -171,7 +167,7 @@ namespace SSE.Player.Controllers
             var number = _playerInput.Interaction.KeyBoard.ReadValue<float>();
             if (number == 0)
                 return;
-            _accessBar.Choose((int)number);
+            _inventory.Choose((int)number);
         }
 
         private void Take(InputAction.CallbackContext ctx)
