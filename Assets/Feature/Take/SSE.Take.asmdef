@@ -1,0 +1,14 @@
+{
+    "name": "SSE.Take",
+    "rootNamespace": "SSE.Take",
+    "references": ["GUID:c7f392e85362c4941a3634e6b727a250"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

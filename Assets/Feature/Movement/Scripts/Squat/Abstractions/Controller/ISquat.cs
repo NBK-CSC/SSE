@@ -8,7 +8,7 @@ namespace SSE.Movement.Squat.Abstractions.Controller
     /// <summary>
     /// Интерфейс приседания
     /// </summary>
-    internal interface ISquat: IInteractObservable
+    public interface ISquat: IInteractObservable
     {
         /// <summary>
         /// Иницилизация
