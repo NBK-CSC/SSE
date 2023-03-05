@@ -43,7 +43,7 @@ namespace SSE.Movement.Rotate.Controller
                 && CheckSwivelRange(_startRotation.y, newRotation.y)
                 && CheckSwivelRange(_startRotation.z, newRotation.z))
             {
-                _transform.Rotate(_rotation * speed);
+                _transform.Rotate(_rotation * speed * Time.deltaTime);
             }
         }
         
