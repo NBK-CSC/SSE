@@ -1,5 +1,4 @@
-﻿using SSE.Core.Behaviours;
-using SSE.Inventory.Abstractions.Controllers;
+﻿using SSE.Inventory.Abstractions.Controllers;
 
 namespace SSE.Take.Abstractions.Controllers
 {
