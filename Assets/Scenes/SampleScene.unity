@@ -175,7 +175,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewPrefab: {fileID: 3035536864379462265, guid: 760e6580fb6d90448a8aca2652a254f0, type: 3}
   containerViews: {fileID: 1524868306}
-  amount: 9
 --- !u!1 &429235200
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,7 +368,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewPrefab: {fileID: -313043551489327812, guid: efe7e87707a077c458c2bc1a4b79fb7a, type: 3}
   containerViews: {fileID: 429235201}
-  amount: 9
   models:
   - {fileID: 11400000, guid: ea89e2e7570d2af45a8ebab601632eb3, type: 2}
   - {fileID: 11400000, guid: 49ce7ec8d8c4c8b4083a66cf3a7f3d97, type: 2}

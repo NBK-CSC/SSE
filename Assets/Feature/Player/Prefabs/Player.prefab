@@ -386,7 +386,6 @@ Transform:
   - {fileID: 6690449969557414416}
   - {fileID: 5765615399918027290}
   - {fileID: 2503447289764892352}
-  - {fileID: 1323637776097933639}
   - {fileID: 7725405832609010281}
   - {fileID: 7725405830753001524}
   m_Father: {fileID: 0}
@@ -760,8 +759,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1323637776097933639}
+  - component: {fileID: 7725405831411595292}
   m_Layer: 3
-  m_Name: ThrowContoller
+  m_Name: ThrowController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -774,14 +774,28 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3295194967366895332}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.83, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3160553039652966887}
+  m_Father: {fileID: 6633948532619911928}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7725405831411595292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295194967366895332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1655d860cbb34e50b5ec98d3e189c16a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  force: 500
+  forceUnderSpeed: 50
 --- !u!1 &4437782395339731783
 GameObject:
   m_ObjectHideFlags: 0
@@ -975,6 +989,7 @@ Transform:
   - {fileID: 7725405831636849993}
   - {fileID: 3185392639313949332}
   - {fileID: 3795582704783794120}
+  - {fileID: 1323637776097933639}
   m_Father: {fileID: 3160553039652966887}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

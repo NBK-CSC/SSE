@@ -13,6 +13,7 @@ namespace SSE.Inventory.Controllers
         [SerializeField] private LayerMask newLayer;
         
         private GameObject _gameObject;
+        private IHandObject _handObject;
 
         /// <summary>
         /// Установить в руку
@@ -22,14 +23,13 @@ namespace SSE.Inventory.Controllers
         public void SetInHand(GameObject gameObject)
         {
             _gameObject = gameObject;
-            if (!_gameObject.TryGetComponent<IHandObject>(out var handObject))
+            if (!_gameObject.TryGetComponent<IHandObject>(out _handObject))
                 throw new Exception($"Объекте, который должен взяться в руку, не найден {typeof(IHandObject)}");
-            
-            handObject.SetActive(true);
-            handObject.UsePhysic(false);
-            handObject.SetParent(itemInHandPosition);
-            handObject.SetPosition(Vector3.zero);
-            handObject.SetLayer((int)Math.Log(newLayer.value, 2));
+            _handObject.SetActive(true);
+            _handObject.UsePhysic(false);
+            _handObject.SetParent(itemInHandPosition);
+            _handObject.SetPosition(Vector3.zero);
+            _handObject.SetLayer((int)Math.Log(newLayer.value, 2));
         }
 
         /// <summary>
@@ -39,6 +39,7 @@ namespace SSE.Inventory.Controllers
         /// <exception cref="Exception">Ошибка, если рука пуста</exception>
         public GameObject GetFromHand()
         {
+            _handObject.SetLayer(0);
             if (_gameObject == null)
                 throw new Exception($"Нет объекта в рукe");
             return _gameObject;

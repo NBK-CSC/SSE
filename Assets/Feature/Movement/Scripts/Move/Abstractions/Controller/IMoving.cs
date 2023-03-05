@@ -6,7 +6,7 @@ namespace SSE.Movement.Move.Abstractions.Controller
     /// <summary>
     /// Интерфейс передвижения
     /// </summary>
-    public interface IMoving : IInteractObservable, IBoostChangeable
+    public interface IMoving : IInteractObservable, IBoostChangeable, IGetterSpeed
     {
         /// <summary>
         /// Иницилизация

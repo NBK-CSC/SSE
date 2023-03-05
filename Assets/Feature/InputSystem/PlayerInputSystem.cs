@@ -196,6 +196,15 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""85448eb4-c0c1-4d78-b9a4-77fca974a71a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -308,6 +317,17 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
                     ""action"": ""Take"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""450309a7-eedd-4c1e-858a-95dc1c378f26"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -331,6 +351,7 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
         m_Interaction = asset.FindActionMap("Interaction", throwIfNotFound: true);
         m_Interaction_KeyBoard = m_Interaction.FindAction("KeyBoard", throwIfNotFound: true);
         m_Interaction_Take = m_Interaction.FindAction("Take", throwIfNotFound: true);
+        m_Interaction_Throw = m_Interaction.FindAction("Throw", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -457,12 +478,14 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
     private IInteractionActions m_InteractionActionsCallbackInterface;
     private readonly InputAction m_Interaction_KeyBoard;
     private readonly InputAction m_Interaction_Take;
+    private readonly InputAction m_Interaction_Throw;
     public struct InteractionActions
     {
         private @PlayerInputSystem m_Wrapper;
         public InteractionActions(@PlayerInputSystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @KeyBoard => m_Wrapper.m_Interaction_KeyBoard;
         public InputAction @Take => m_Wrapper.m_Interaction_Take;
+        public InputAction @Throw => m_Wrapper.m_Interaction_Throw;
         public InputActionMap Get() { return m_Wrapper.m_Interaction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -478,6 +501,9 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
                 @Take.started -= m_Wrapper.m_InteractionActionsCallbackInterface.OnTake;
                 @Take.performed -= m_Wrapper.m_InteractionActionsCallbackInterface.OnTake;
                 @Take.canceled -= m_Wrapper.m_InteractionActionsCallbackInterface.OnTake;
+                @Throw.started -= m_Wrapper.m_InteractionActionsCallbackInterface.OnThrow;
+                @Throw.performed -= m_Wrapper.m_InteractionActionsCallbackInterface.OnThrow;
+                @Throw.canceled -= m_Wrapper.m_InteractionActionsCallbackInterface.OnThrow;
             }
             m_Wrapper.m_InteractionActionsCallbackInterface = instance;
             if (instance != null)
@@ -488,6 +514,9 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
                 @Take.started += instance.OnTake;
                 @Take.performed += instance.OnTake;
                 @Take.canceled += instance.OnTake;
+                @Throw.started += instance.OnThrow;
+                @Throw.performed += instance.OnThrow;
+                @Throw.canceled += instance.OnThrow;
             }
         }
     }
@@ -513,5 +542,6 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
     {
         void OnKeyBoard(InputAction.CallbackContext context);
         void OnTake(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
     }
 }

@@ -18,9 +18,10 @@ namespace SSE.Movement.Move.Controller
         private CharacterController _characterController;
         private Transform _transform;
         private Vector3 _direction;
-        private float _currentSpeed;
         private float _boost = 1;
         private bool _isInit;
+
+        public float Speed => speed * _boost * _direction.y;
 
         public IRestricted RestrictProperty { get; } = new RestrictionProperty();
 
@@ -30,11 +31,6 @@ namespace SSE.Movement.Move.Controller
         {
             _characterController = GetComponent<CharacterController>();
             _transform = transform;
-        }
-        
-        private void Start()
-        {
-            _currentSpeed = speed;
         }
         
         private void Update()
@@ -63,7 +59,7 @@ namespace SSE.Movement.Move.Controller
         {
             _characterController.Move(
                 (_transform.right * _direction.x + _transform.forward * _direction.y) 
-                * (_currentSpeed * _boost * Time.deltaTime));
+                * (speed * _boost * Time.deltaTime));
         }
         
         public void AddBoost(float boost)
