@@ -1,0 +1,22 @@
+{
+    "name": "SSE.Player",
+    "rootNamespace": "SSE.Player",
+    "references": [
+        "GUID:4175d1c1f78f3f446b33dd30f3ce3ef2",
+        "GUID:445cfa31cb5ded34e92532d4a2bc9fcc",
+        "GUID:c7f392e85362c4941a3634e6b727a250",
+        "GUID:528bb2eb8f603b347bb2b9233fb334f0",
+        "GUID:f58e8e0388cdbc14b8db179391f99f48",
+        "GUID:751b69f41ed8fa44dbe2eb02577da0a4",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

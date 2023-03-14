@@ -12,7 +12,7 @@ namespace SSE.Inventory.Controllers
 
         public bool IsEmpty => ItemController == null;
         public IItemController ItemController { get; private set; }
-        public string ItemName => ItemController.Name;
+        public string ItemName => ItemController?.Name;
         
         /// <summary>
         /// Конструктор контроллера
@@ -46,6 +46,7 @@ namespace SSE.Inventory.Controllers
                 return null;
             var item = ItemController;
             ItemController = null;
+            Active = false;
             return item;
         }
     }

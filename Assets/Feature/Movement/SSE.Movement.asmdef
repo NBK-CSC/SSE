@@ -1,0 +1,14 @@
+{
+    "name": "SSE.Movement",
+    "rootNamespace": "SSE.Movement",
+    "references": ["GUID:445cfa31cb5ded34e92532d4a2bc9fcc"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,14 @@
+{
+    "name": "SSE.Throw",
+    "rootNamespace": "SSE.Throw",
+    "references": ["GUID:c7f392e85362c4941a3634e6b727a250","GUID:4175d1c1f78f3f446b33dd30f3ce3ef2"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

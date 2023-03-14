@@ -176,7 +176,7 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""AccessBar"",
+            ""name"": ""Interaction"",
             ""id"": ""c2570c07-be9b-4309-aae4-871c439c2e24"",
             ""actions"": [
                 {
@@ -187,6 +187,24 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Take"",
+                    ""type"": ""Button"",
+                    ""id"": ""d6e7bf2e-65ea-4e7b-a11c-33dbefe9e107"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""85448eb4-c0c1-4d78-b9a4-77fca974a71a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -288,6 +306,28 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
                     ""action"": ""KeyBoard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2f92f18e-9b9a-407d-970c-1d9ef643da26"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Take"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""450309a7-eedd-4c1e-858a-95dc1c378f26"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -307,9 +347,11 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_Squat = m_Player.FindAction("Squat", throwIfNotFound: true);
-        // AccessBar
-        m_AccessBar = asset.FindActionMap("AccessBar", throwIfNotFound: true);
-        m_AccessBar_KeyBoard = m_AccessBar.FindAction("KeyBoard", throwIfNotFound: true);
+        // Interaction
+        m_Interaction = asset.FindActionMap("Interaction", throwIfNotFound: true);
+        m_Interaction_KeyBoard = m_Interaction.FindAction("KeyBoard", throwIfNotFound: true);
+        m_Interaction_Take = m_Interaction.FindAction("Take", throwIfNotFound: true);
+        m_Interaction_Throw = m_Interaction.FindAction("Throw", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -431,38 +473,54 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
     }
     public PlayerActions @Player => new PlayerActions(this);
 
-    // AccessBar
-    private readonly InputActionMap m_AccessBar;
-    private IAccessBarActions m_AccessBarActionsCallbackInterface;
-    private readonly InputAction m_AccessBar_KeyBoard;
-    public struct AccessBarActions
+    // Interaction
+    private readonly InputActionMap m_Interaction;
+    private IInteractionActions m_InteractionActionsCallbackInterface;
+    private readonly InputAction m_Interaction_KeyBoard;
+    private readonly InputAction m_Interaction_Take;
+    private readonly InputAction m_Interaction_Throw;
+    public struct InteractionActions
     {
         private @PlayerInputSystem m_Wrapper;
-        public AccessBarActions(@PlayerInputSystem wrapper) { m_Wrapper = wrapper; }
-        public InputAction @KeyBoard => m_Wrapper.m_AccessBar_KeyBoard;
-        public InputActionMap Get() { return m_Wrapper.m_AccessBar; }
+        public InteractionActions(@PlayerInputSystem wrapper) { m_Wrapper = wrapper; }
+        public InputAction @KeyBoard => m_Wrapper.m_Interaction_KeyBoard;
+        public InputAction @Take => m_Wrapper.m_Interaction_Take;
+        public InputAction @Throw => m_Wrapper.m_Interaction_Throw;
+        public InputActionMap Get() { return m_Wrapper.m_Interaction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(AccessBarActions set) { return set.Get(); }
-        public void SetCallbacks(IAccessBarActions instance)
+        public static implicit operator InputActionMap(InteractionActions set) { return set.Get(); }
+        public void SetCallbacks(IInteractionActions instance)
         {
-            if (m_Wrapper.m_AccessBarActionsCallbackInterface != null)
+            if (m_Wrapper.m_InteractionActionsCallbackInterface != null)
             {
-                @KeyBoard.started -= m_Wrapper.m_AccessBarActionsCallbackInterface.OnKeyBoard;
-                @KeyBoard.performed -= m_Wrapper.m_AccessBarActionsCallbackInterface.OnKeyBoard;
-                @KeyBoard.canceled -= m_Wrapper.m_AccessBarActionsCallbackInterface.OnKeyBoard;
+                @KeyBoard.started -= m_Wrapper.m_InteractionActionsCallbackInterface.OnKeyBoard;
+                @KeyBoard.performed -= m_Wrapper.m_InteractionActionsCallbackInterface.OnKeyBoard;
+                @KeyBoard.canceled -= m_Wrapper.m_InteractionActionsCallbackInterface.OnKeyBoard;
+                @Take.started -= m_Wrapper.m_InteractionActionsCallbackInterface.OnTake;
+                @Take.performed -= m_Wrapper.m_InteractionActionsCallbackInterface.OnTake;
+                @Take.canceled -= m_Wrapper.m_InteractionActionsCallbackInterface.OnTake;
+                @Throw.started -= m_Wrapper.m_InteractionActionsCallbackInterface.OnThrow;
+                @Throw.performed -= m_Wrapper.m_InteractionActionsCallbackInterface.OnThrow;
+                @Throw.canceled -= m_Wrapper.m_InteractionActionsCallbackInterface.OnThrow;
             }
-            m_Wrapper.m_AccessBarActionsCallbackInterface = instance;
+            m_Wrapper.m_InteractionActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @KeyBoard.started += instance.OnKeyBoard;
                 @KeyBoard.performed += instance.OnKeyBoard;
                 @KeyBoard.canceled += instance.OnKeyBoard;
+                @Take.started += instance.OnTake;
+                @Take.performed += instance.OnTake;
+                @Take.canceled += instance.OnTake;
+                @Throw.started += instance.OnThrow;
+                @Throw.performed += instance.OnThrow;
+                @Throw.canceled += instance.OnThrow;
             }
         }
     }
-    public AccessBarActions @AccessBar => new AccessBarActions(this);
+    public InteractionActions @Interaction => new InteractionActions(this);
     private int m_MouseandKeyboardSchemeIndex = -1;
     public InputControlScheme MouseandKeyboardScheme
     {
@@ -480,8 +538,10 @@ public partial class @PlayerInputSystem : IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnSquat(InputAction.CallbackContext context);
     }
-    public interface IAccessBarActions
+    public interface IInteractionActions
     {
         void OnKeyBoard(InputAction.CallbackContext context);
+        void OnTake(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
     }
 }

@@ -22,5 +22,10 @@ namespace SSE.Inventory.Views
             get => chooseBg.activeSelf;
             set => chooseBg.SetActive(value);
         }
+
+        public override Transform SetParent
+        {
+            set => transform.SetParent(value);
+        }
     }
 }
