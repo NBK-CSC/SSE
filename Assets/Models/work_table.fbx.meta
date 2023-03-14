@@ -5,6 +5,21 @@ ModelImporter:
   internalIDToNameTable: []
   externalObjects:
   - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: metal
+    second: {fileID: -4973734387028869240, guid: 75cff1debe96f0b4db9d2e9c67d1142a, type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: metal.001
+    second: {fileID: -4973734387028869240, guid: 75cff1debe96f0b4db9d2e9c67d1142a, type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: white oak
+    second: {fileID: -8067726398312463513, guid: a5a87d4576da3574a9ea3514ec335e8f, type: 3}
+  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: WoodFineDark004_NRM_4K

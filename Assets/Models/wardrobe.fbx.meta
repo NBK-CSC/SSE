@@ -5,6 +5,16 @@ ModelImporter:
   internalIDToNameTable: []
   externalObjects:
   - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal
+    second: {fileID: -4973734387028869240, guid: cf7dd37384329c540a731b157be916ba, type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: second_wood
+    second: {fileID: -8144226322939119044, guid: acf2bf0397a15c44eb2ca23f3f939e88, type: 3}
+  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: antique_veneer1_Metallic
