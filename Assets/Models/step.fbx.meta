@@ -3,27 +3,7 @@ guid: acf2bf0397a15c44eb2ca23f3f939e88
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: antique_veneer1_Metallic
-    second: {fileID: 2800000, guid: 5d026c5d12c95e843b9b1ebb3000a1d0, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: antique_veneer1_Normal-ogl
-    second: {fileID: 2800000, guid: a0b4f7d411af45b4a9b16f76ba2c6558, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: antique_veneer1_Roughness
-    second: {fileID: 2800000, guid: 94b22568753ffce46923318873ea325a, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: antique_veneer1_albedo
-    second: {fileID: 2800000, guid: 6cee2dc2b1aa41d46a32cb96e19539bd, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
